@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import React from 'react'
+import { useGetPokemonByNameQuery } from './redux/counter'
+
+export default function App() {
+  // Using a query hook automatically fetches data and returns query values
+  const { data, error, isLoading } = useGetPokemonByNameQuery('')
+  
+console.log(error);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {error ? (
+        <>Oh no, there was an error</>
+      ) : isLoading ? (
+        <>Loading...</>
+      ) : data ? (
+        <>
+        {data.results.map((data) => (
+          <>
+          <h1>{data.title}</h1>
+          <img src={`https://image.tmdb.org/t/p/w500/${data.poster_path}`} alt={data.title} />
+          </>
+        ))}
+        </>
+      ) : null}
     </div>
-  );
+  )
 }
 
-export default App;
